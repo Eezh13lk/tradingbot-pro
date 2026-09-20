@@ -1,0 +1,20 @@
+[app]
+title = TradingBot Pro
+package.name = tradingbotpro
+package.domain = org.tradingbotpro
+source.dir = .
+source.include_exts = py,kv,json,txt
+source.exclude_dirs = bin,.buildozer,venv,.venv,__pycache__
+version = 1.0.0
+requirements = python3,kivy,requests,urllib3,certifi,chardet,idna
+orientation = portrait
+fullscreen = 0
+android.permissions = INTERNET
+android.api = 33
+android.minapi = 24
+android.archs = arm64-v8a
+android.debug = True
+
+[buildozer]
+log_level = 2
+warn_on_root = 1
