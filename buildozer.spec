@@ -4,7 +4,7 @@ package.name = tradingbotpro
 package.domain = org.tradingbotpro
 source.dir = .
 source.include_exts = py,kv,json,txt
-source.exclude_dirs = bin,.buildozer,venv,.venv,__pycache__
+source.exclude_dirs = bin,.buildozer,.venv,__pycache__
 version = 1.0.0
 requirements = python3,kivy,requests
 orientation = portrait
@@ -15,6 +15,7 @@ android.minapi = 24
 android.archs = arm64-v8a
 android.debug = True
 android.accept_sdk_license = True
+android.ndk = 25b
 
 [buildozer]
 log_level = 2
