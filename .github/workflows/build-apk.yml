@@ -3,22 +3,27 @@ on: [push, workflow_dispatch]
 
 jobs:
   build-android:
-    # Pin to ubuntu-22.04 for maximum compatibility with the Docker image
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
       - name: Build APK with Buildozer
-        # Use the official kivy/buildozer Docker image directly
         run: |
-          docker run --rm -v "${{ github.workspace }}":/home/user/hostcwd kivy/buildozer:latest android debug
+          docker run --rm \
+            -v "${{ github.workspace }}":/home/user/hostcwd \
+            -w /home/user/hostcwd \
+            kivy/buildozer:0.46 \
+            android debug
 
       - name: Find APK path
         id: find_apk
-        # Locate the generated .apk file in the bin/ directory
         run: |
           APK_PATH=$(find bin -name "*.apk" | head -n 1)
-          echo "apk_path=$APK_PATH" >> $GITHUB_OUTPUT
+          if [ -z "$APK_PATH" ]; then
+            echo "No APK generated"
+            exit 1
+          fi
+          echo "apk_path=$APK_PATH" >> "$GITHUB_OUTPUT"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
