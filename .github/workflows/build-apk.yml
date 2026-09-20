@@ -3,12 +3,14 @@ on: [push, workflow_dispatch]
 
 jobs:
   build-android:
-    runs-on: ubuntu-latest
+    # FIX 1: Pin to ubuntu-22.04 to avoid Docker/Android SDK conflicts on 24.04
+    runs-on: ubuntu-22.04 
     steps:
       - uses: actions/checkout@v4
 
       - name: Build with Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
+        # FIX 2: Pin to a specific version instead of @v1 (which might be broken)
+        uses: ArtemSBulgakov/buildozer-action@v1.1.4
         id: buildozer
         with:
           command: android debug
