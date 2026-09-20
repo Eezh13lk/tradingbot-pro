@@ -6,7 +6,7 @@ source.dir = .
 source.include_exts = py,kv,json,txt
 source.exclude_dirs = bin,.buildozer,.venv,__pycache__
 version = 1.0.0
-requirements = python3,kivy
+requirements = python3,kivy==2.3.0,requests==2.31.0
 orientation = portrait
 fullscreen = 0
 android.permissions = INTERNET
