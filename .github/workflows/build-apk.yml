@@ -3,21 +3,25 @@ on: [push, workflow_dispatch]
 
 jobs:
   build-android:
-    # FIX 1: Pin to ubuntu-22.04 to avoid Docker/Android SDK conflicts on 24.04
-    runs-on: ubuntu-22.04 
+    # Pin to ubuntu-22.04 for maximum compatibility with the Docker image
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build with Buildozer
-        # FIX 2: Pin to a specific version instead of @v1 (which might be broken)
-        uses: ArtemSBulgakov/buildozer-action@v1.1.4
-        id: buildozer
-        with:
-          command: android debug
-          buildozer_version: stable
+      - name: Build APK with Buildozer
+        # Use the official kivy/buildozer Docker image directly
+        run: |
+          docker run --rm -v "${{ github.workspace }}":/home/user/hostcwd kivy/buildozer:latest android debug
+
+      - name: Find APK path
+        id: find_apk
+        # Locate the generated .apk file in the bin/ directory
+        run: |
+          APK_PATH=$(find bin -name "*.apk" | head -n 1)
+          echo "apk_path=$APK_PATH" >> $GITHUB_OUTPUT
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: tradingbot-apk
-          path: ${{ steps.buildozer.outputs.filename }}
+          path: ${{ steps.find_apk.outputs.apk_path }}
