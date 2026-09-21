@@ -4,7 +4,7 @@ from kivy.uix.label import Label
 class TradingBotApp(App):
     def build(self):
         return Label(
-            text="TradingBot Pro\n\nBuild OK.\nNext: add bot/ code\nfrom the README.",
+            text="TradingBot Pro\n\nBase Build OK.\nNetwork code removed for testing.",
             halign="center"
         )
 
