@@ -1,7 +1,4 @@
 [app]
-p4a.branch = develop
-android.accept_sdk_license = True
-android.ndk = 25b
 title = TradingBot Pro
 package.name = tradingbotpro
 package.domain = org.tradingbotpro
@@ -15,8 +12,10 @@ fullscreen = 0
 android.permissions = INTERNET
 android.api = 33
 android.minapi = 24
+android.ndk = 25b
 android.archs = arm64-v8a
 android.debug = True
+p4a.branch = develop
 
 [buildozer]
 log_level = 2
