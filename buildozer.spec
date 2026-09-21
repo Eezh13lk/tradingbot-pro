@@ -1,4 +1,5 @@
 [app]
+p4a.branch = develop
 android.accept_sdk_license = True
 android.ndk = 25b
 title = TradingBot Pro
