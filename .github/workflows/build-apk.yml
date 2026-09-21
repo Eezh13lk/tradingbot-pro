@@ -28,28 +28,40 @@ jobs:
           pip install --upgrade pip
           pip install buildozer cython==0.29.36 virtualenv
 
-      - name: Clean previous build state
-        run: |
-          rm -rf .buildozer bin
-          rm -rf ~/.buildozer
+      - name: Clean previous state
+        run: rm -rf .buildozer bin ~/.buildozer
 
       - name: Build APK
+        shell: bash
         run: |
+          set -o pipefail
           yes | buildozer android debug 2>&1 | tee build.log
-        timeout-minutes: 90
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        if: success()
-        with:
-          name: tradingbot-apk
-          path: bin/*.apk
-          retention-days: 30
+      - name: Show tail of build log
+        if: always()
+        run: tail -n 80 build.log || true
 
-      - name: Upload log on failure
+      - name: Check if APK was produced
+        if: always()
+        run: |
+          echo "=== Contents of bin/ ==="
+          ls -la bin/ || echo "bin/ does not exist"
+          echo "=== Searching for any apk ==="
+          find . -name "*.apk" -not -path "./.buildozer/*" || true
+
+      - name: Upload build log (always)
+        if: always()
         uses: actions/upload-artifact@v4
-        if: failure()
         with:
           name: build-log
           path: build.log
           retention-days: 7
+
+      - name: Upload APK (if it exists)
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tradingbot-apk
+          path: bin/*.apk
+          if-no-files-found: error
+          retention-days: 30
